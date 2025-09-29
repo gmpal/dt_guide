@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twins & MLOps Guide</title>
+    <style>
+        /* Inter Font from Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* VARIABLES */
+        :root {
+            --accent-color: #1a86c7;
+            --accent-color-light: #3a9fdf;
+            --accent-color-dark: #0066a1;
+            --background-color: #f7f8f8;
+            --text-color: #0066a1;
+            --text-color-muted: #000000;
+            --card-bg: #e1f0f5;
+            --card-border: #d0d7de;
+
+            /* spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 32px;
+            --space-xl: 64px;
+            --space-xxl: 128px;
+
+            /* typography */
+            --font-size-xs: 14px;
+            --font-size-sm: 16px;
+            --font-size-md: 18px;
+            --font-size-lg: 24px;
+            --font-size-xl: 28px;
+            --font-size-xxl: 64px;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: Inter, Arial, sans-serif;
+            margin: 0;
+            padding: 0 20px;
+            color: var(--text-color);
+        }
+
+        #page {
+            display: flex;
+            flex-direction: column;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: var(--space-md);
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--text-color-dark);
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a:link,
+        nav ul li a:visited {
+            color: var(--text-color);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: opacity 0.3s ease, color 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        /* TYPOGRAPHY */
+        a:link,
+        a:visited {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-color-light);
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: var(--font-size-xxl);
+            margin-bottom: var(--space-sm);
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: var(--font-size-xl);
+            color: var(--accent-color-dark);
+            margin-bottom: var(--space-lg);
+            font-weight: 600;
+            margin-top: var(--space-xl);
+            border-bottom: 2px solid var(--accent-color-light);
+            padding-bottom: var(--space-sm);
+        }
+
+        h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-md);
+            margin-top: var(--space-lg);
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        h4 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: var(--space-sm);
+            font-size: var(--font-size-md);
+        }
+
+        p {
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--text-color-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        /* SECTIONS & CARDS */
+        #about {
+            margin-top: var(--space-xl);
+            text-align: center;
+        }
+
+        #about p {
+            font-size: var(--font-size-md);
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--text-color);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        main {
+            margin-top: var(--space-lg);
+        }
+
+        section {
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .tool-category {
+            background-color: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: var(--space-lg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tool-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-category ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tool-category li {
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid #eee;
+        }
+        .tool-category li:last-child {
+            border-bottom: none;
+        }
+
+        .tool-category a {
+            font-weight: 500;
+        }
+
+        #learning-path ol {
+            list-style-position: inside;
+            padding-left: 0;
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+        }
+
+        #learning-path li {
+            margin-bottom: var(--space-sm);
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: var(--space-xl);
+            padding: var(--space-lg) 0;
+            color: var(--text-color-muted);
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+        }
+
+        /* MEDIA QUERIES */
+        @media screen and (max-width: 768px) {
+            :root {
+                --font-size-xxl: 48px;
+            }
+            header {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page">
+
+        <header>
+            <div class="logo">
+                Digital Twins & MLOps
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#infra">Infrastructure</a></li>
+                    <li><a href="#data">Data</a></li>
+                    <li><a href="#ml">ML & MLOps</a></li>
+                    <li><a href="#dev">Development</a></li>
+                    <li><a href="#iot">IoT</a></li>
+                    <li><a href="#sim">Simulation</a></li>
+                    <li><a href="#learning-path">Learning Path</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section id="about">
+                <h1>Guide for Students</h1>
+                <p>
+                    This website is a reference guide to the tools and technologies for building a cloud-based digital twin supported by a solid MLOps infrastructure. Explore the different categories to discover the essential components for your project. For a concrete example, take a look at the <a href="https://github.com/gmpal/vpp" target="_blank" rel="noopener noreferrer">Virtual Power Plant (VPP)</a> project.
+                </p>
+            </section>
+
+            <section id="infra">
+                <h2>Core Infrastructure & Cloud Services</h2>
+                <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>Container Orchestration & Deployment</h4>
+                        <ul>
+                            <li><a href="https://docs.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a></li>
+                            <li><a href="https://docs.docker.com/compose/" target="_blank" rel="noopener noreferrer">Docker Compose</a></li>
+                            <li><a href="https://kubernetes.io/docs/" target="_blank" rel="noopener noreferrer">Kubernetes</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Cloud Platforms</h4>
+                        <ul>
+                            <li><a href="https://docs.aws.amazon.com/" target="_blank" rel="noopener noreferrer">AWS (Amazon Web Services)</a></li>
+                            <li><a href="https://cloud.google.com/docs" target="_blank" rel="noopener noreferrer">Google Cloud Platform</a></li>
+                            <li><a href="https://docs.microsoft.com/en-us/azure/" target="_blank" rel="noopener noreferrer">Microsoft Azure</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Specific AWS Services</h4>
+                         <ul>
+                            <li><a href="https://docs.aws.amazon.com/iot/" target="_blank" rel="noopener noreferrer">AWS IoT Core</a></li>
+                            <li><a href="https://docs.aws.amazon.com/lambda/" target="_blank" rel="noopener noreferrer">AWS Lambda</a></li>
+                            <li><a href="https://docs.aws.amazon.com/ec2/" target="_blank" rel="noopener noreferrer">Amazon EC2</a></li>
+                            <li><a href="https://docs.aws.amazon.com/s3/" target="_blank" rel="noopener noreferrer">Amazon S3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="data">
+                <h2>Data Streaming, Brokers & Databases</h2>
+                 <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>Real-time Data Processing</h4>
+                        <ul>
+                            <li><a href="https://kafka.apache.org/documentation/" target="_blank" rel="noopener noreferrer">Apache Kafka</a></li>
+                            <li><a href="https://pulsar.apache.org/docs/" target="_blank" rel="noopener noreferrer">Apache Pulsar</a></li>
+                            <li><a href="https://redis.io/docs/data-types/streams/" target="_blank" rel="noopener noreferrer">Redis Streams</a></li>
+                            <li><a href="https://storm.apache.org/releases/current/index.html" target="_blank" rel="noopener noreferrer">Apache Storm</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Message Queues</h4>
+                        <ul>
+                            <li><a href="https://www.rabbitmq.com/documentation.html" target="_blank" rel="noopener noreferrer">RabbitMQ</a></li>
+                            <li><a href="https://activemq.apache.org/components/artemis/documentation/" target="_blank" rel="noopener noreferrer">Apache ActiveMQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Databases</h4>
+                         <ul>
+                            <li><a href="https://www.postgresql.org/docs/" target="_blank" rel="noopener noreferrer">PostgreSQL</a></li>
+                            <li><a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener noreferrer">MySQL</a></li>
+                            <li><a href="https://docs.timescale.com/" target="_blank" rel="noopener noreferrer">TimescaleDB</a></li>
+                            <li><a href="https://docs.influxdata.com/" target="_blank" rel="noopener noreferrer">InfluxDB</a></li>
+                            <li><a href="https://cassandra.apache.org/doc/" target="_blank" rel="noopener noreferrer">Apache Cassandra</a></li>
+                            <li><a href="https://docs.mongodb.com/" target="_blank" rel="noopener noreferrer">MongoDB</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ml">
+                <h2>Machine Learning & MLOps</h2>
+                <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>ML Frameworks & Libraries</h4>
+                        <ul>
+                            <li><a href="https://scikit-learn.org/stable/documentation.html" target="_blank" rel="noopener noreferrer">Scikit-learn</a></li>
+                            <li><a href="https://www.tensorflow.org/api_docs" target="_blank" rel="noopener noreferrer">TensorFlow</a></li>
+                            <li><a href="https://pytorch.org/docs/stable/index.html" target="_blank" rel="noopener noreferrer">PyTorch</a></li>
+                            <li><a href="https://facebook.github.io/prophet/docs/" target="_blank" rel="noopener noreferrer">Prophet (Time Series)</a></li>
+                            <li><a href="https://alkaline-ml.com/pmdarima/" target="_blank" rel="noopener noreferrer">pmdarima (ARIMA)</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>MLOps Platforms</h4>
+                        <ul>
+                            <li><a href="https://mlflow.org/docs/latest/index.html" target="_blank" rel="noopener noreferrer">MLflow</a></li>
+                            <li><a href="https://docs.wandb.ai/" target="_blank" rel="noopener noreferrer">Weights & Biases</a></li>
+                            <li><a href="https://www.kubeflow.org/docs/" target="_blank" rel="noopener noreferrer">Kubeflow</a></li>
+                            <li><a href="https://airflow.apache.org/docs/" target="_blank" rel="noopener noreferrer">Apache Airflow</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="dev">
+                <h2>Backend & Frontend Development</h2>
+                 <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>API Frameworks (Backend)</h4>
+                        <ul>
+                            <li><a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener noreferrer">FastAPI (Python)</a></li>
+                            <li><a href="https://flask.palletsprojects.com/" target="_blank" rel="noopener noreferrer">Flask (Python)</a></li>
+                            <li><a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener noreferrer">Django REST Framework</a></li>
+                            <li><a href="https://expressjs.com/" target="_blank" rel="noopener noreferrer">Express.js (Node.js)</a></li>
+                        </ul>
+                    </div>
+                     <div class="tool-category">
+                        <h4>Data Processing</h4>
+                        <ul>
+                            <li><a href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener noreferrer">Pandas</a></li>
+                            <li><a href="https://numpy.org/doc/" target="_blank" rel="noopener noreferrer">NumPy</a></li>
+                            <li><a href="https://spark.apache.org/docs/latest/" target="_blank" rel="noopener noreferrer">Apache Spark</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Web Frameworks (Frontend)</h4>
+                        <ul>
+                           <li><a href="https://reactjs.org/docs/" target="_blank" rel="noopener noreferrer">React</a></li>
+                           <li><a href="https://vuejs.org/guide/" target="_blank" rel="noopener noreferrer">Vue.js</a></li>
+                           <li><a href="https://angular.io/docs" target="_blank" rel="noopener noreferrer">Angular</a></li>
+                           <li><a href="https://www.chartjs.org/docs/latest/" target="_blank" rel="noopener noreferrer">Chart.js</a></li>
+                            <li><a href="https://d3js.org/" target="_blank" rel="noopener noreferrer">D3.js</a></li>
+                            <li><a href="https://plotly.com/javascript/" target="_blank" rel="noopener noreferrer">Plotly</a></li>
+                            <li><a href="https://recharts.org/en-US/" target="_blank" rel="noopener noreferrer">Recharts</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="iot">
+                <h2>IoT & Hardware Integration</h2>
+                 <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>Microcontrollers & SBCs</h4>
+                        <ul>
+                            <li><a href="https://www.raspberrypi.org/documentation/" target="_blank" rel="noopener noreferrer">Raspberry Pi</a></li>
+                            <li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noopener noreferrer">ESP32</a></li>
+                            <li><a href="https://docs.arduino.cc/" target="_blank" rel="noopener noreferrer">Arduino</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>IoT Communication Protocols</h4>
+                        <ul>
+                            <li><a href="https://mqtt.org/mqtt-specification/" target="_blank" rel="noopener noreferrer">MQTT</a></li>
+                            <li><a href="https://tools.ietf.org/html/rfc7252" target="_blank" rel="noopener noreferrer">CoAP</a></li>
+                            <li><a href="https://lora-alliance.org/resource_hub/lorawan-specification-v1-0-3/" target="_blank" rel="noopener noreferrer">LoRaWAN</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>IoT Libraries (Python)</h4>
+                         <ul>
+                            <li><a href="https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php" target="_blank" rel="noopener noreferrer">Paho MQTT</a></li>
+                            <li><a href="https://pypi.org/project/RPi.GPIO/" target="_blank" rel="noopener noreferrer">RPi.GPIO</a></li>
+                            <li><a href="https://docs.circuitpython.org/" target="_blank" rel="noopener noreferrer">CircuitPython</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="sim">
+                <h2>Simulation, Optimization & Monitoring</h2>
+                <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>Optimization & Programming</h4>
+                        <ul>
+                            <li><a href="https://coin-or.github.io/pulp/" target="_blank" rel="noopener noreferrer">PuLP (Python)</a></li>
+                            <li><a href="https://www.cvxpy.org/" target="_blank" rel="noopener noreferrer">CVXPY</a></li>
+                            <li><a href="https://developers.google.com/optimization" target="_blank" rel="noopener noreferrer">OR-Tools (Google)</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Energy & Physical System Simulation</h4>
+                        <ul>
+                           <li><a href="https://pvlib-python.readthedocs.io/" target="_blank" rel="noopener noreferrer">pvlib (Solar)</a></li>
+                           <li><a href="https://windpowerlib.readthedocs.io/" target="_blank" rel="noopener noreferrer">windpowerlib (Wind)</a></li>
+                           <li><a href="https://openmodelica.org/" target="_blank" rel="noopener noreferrer">OpenModelica</a></li>
+                        </ul>
+                    </div>
+                    <div class="tool-category">
+                        <h4>Monitoring & Observability</h4>
+                        <ul>
+                            <li><a href="https://prometheus.io/docs/" target="_blank" rel="noopener noreferrer">Prometheus</a></li>
+                            <li><a href="https://grafana.com/docs/" target="_blank" rel="noopener noreferrer">Grafana</a></li>
+                            <li><a href="https://www.elastic.co/guide/" target="_blank" rel="noopener noreferrer">ELK Stack</a></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <section id="sim">
+                <h2>Visualization</h2>
+                <div class="category-grid">
+                    <div class="tool-category">
+                        <h4>3D Visualization & DT Platforms</h4>
+                        <ul>
+                            <li><a href="https://docs.unity3d.com/" target="_blank" rel="noopener noreferrer">Unity3D</a></li>
+                            <li><a href="https://threejs.org/docs/" target="_blank" rel="noopener noreferrer">Three.js</a></li>
+                            <li><a href="https://docs.microsoft.com/en-us/azure/digital-twins/" target="_blank" rel="noopener noreferrer">Azure Digital Twins</a></li>
+                            <li><a href="https://docs.aws.amazon.com/iot-twinmaker/" target="_blank" rel="noopener noreferrer">AWS IoT TwinMaker</a></li>
+                        </ul>
+                    </div>                    
+                </div>
+            </section>
+
+            <section id="learning-path">
+                <h2>Recommended Learning Path</h2>
+                <div class="tool-category">
+                    <ol>
+                        <li><b>Start with Infrastructure:</b> Docker, Docker Compose, basic cloud services.</li>
+                        <li><b>Data Streaming:</b> Kafka fundamentals and real-time data processing.</li>
+                        <li><b>IoT Integration:</b> Raspberry Pi, sensors, MQTT protocol.</li>
+                        <li><b>Database Design:</b> TimescaleDB for time-series data.</li>
+                        <li><b>ML Pipeline:</b> MLflow for experiment tracking and model deployment.</li>
+                        <li><b>API Development:</b> FastAPI for backend services.</li>
+                        <li><b>Frontend Visualization:</b> React + Chart.js for real-time dashboards.</li>
+                        <li><b>Optimization:</b> PuLP for decision-making algorithms.</li>
+                        <li><b>Monitoring:</b> Prometheus + Grafana for system observability.</li>
+                    </ol>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>
+                &copy; 2025 MLG-ULB. All rights reserved.
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
